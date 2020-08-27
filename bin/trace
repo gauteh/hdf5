@@ -42,6 +42,7 @@ $Source = "";
                "H5D_mpio_actual_chunk_opt_mode_t" => "Do",
                "H5D_space_status_t"         => "Ds",
                "H5D_vds_view_t"             => "Dv",
+               "H5D_chunk_iter_op_t"        => "x",
                "H5FD_mpio_xfer_t"           => "Dt",
                "herr_t"                     => "e",
                "H5E_direction_t"            => "Ed",
@@ -353,7 +354,7 @@ sub rewrite_func ($$$$$) {
     goto error;
   }
 
-  
+
  error:
   return "\n$type\n$name($args)\n$body";
 }
@@ -366,7 +367,7 @@ my $total_api = 0;
 for $file (@ARGV) {
   # Ignore some files that do not need tracing macros
   unless ($file eq "H5FDmulti.c" or $file eq "src/H5FDmulti.c" or $file eq "H5FDstdio.c" or $file eq "src/H5FDstdio.c") {
-  
+
     # Snarf up the entire file
     open SOURCE, $file or die "$file: $!\n";
     $Source = join "", <SOURCE>;
@@ -383,7 +384,7 @@ for $file (@ARGV) {
 
 # If the source changed then print out the new version
     if ($original ne $Source) {
-      printf "%s: instrumented %d API function%s\n", 
+      printf "%s: instrumented %d API function%s\n",
              $file, $napi, 1==$napi?"":"s";
       rename $file, "$file~" or die "unable to make backup";
       open SOURCE, ">$file" or die "unable to modify source";
